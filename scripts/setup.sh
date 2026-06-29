@@ -13,7 +13,7 @@ npm run build -w @block-hash/common
 
 # 3. Start Infrastructure
 echo "Starting Docker containers (PostgreSQL, Redis, ClickHouse)..."
-docker-compose up -d
+docker compose up -d
 
 # Wait for DBs to be ready
 echo "Waiting for databases to initialize (10s)..."

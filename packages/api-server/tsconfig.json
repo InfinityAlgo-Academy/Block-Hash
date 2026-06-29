@@ -13,11 +13,12 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
+    "rootDir": "./src",
+    "composite": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallbackArgs": false
+    "forceConsistentCasingInFileNames": false
   },
   "references": [
     { "path": "../common" },

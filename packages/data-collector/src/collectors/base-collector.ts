@@ -17,7 +17,7 @@ export abstract class BaseCollector {
     async start(): Promise<void> {
         if (this.isRunning) return;
         this.isRunning = true;
-        this.onStart();
+        await this.onStart();
         this.poll();
     }
 
@@ -28,7 +28,7 @@ export abstract class BaseCollector {
             clearTimeout(this.intervalId);
             this.intervalId = null;
         }
-        this.onStop();
+        await this.onStop();
     }
 
     protected async poll(): Promise<void> {
@@ -46,10 +46,10 @@ export abstract class BaseCollector {
     }
 
     /** Called once when collector starts */
-    protected onStart(): void {}
+    protected onStart(): void | Promise<void> {}
 
     /** Called once when collector stops */
-    protected onStop(): void {}
+    protected onStop(): void | Promise<void> {}
 
     /** The core processing logic executed on every poll interval */
     protected abstract processNext(): Promise<void>;

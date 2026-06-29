@@ -1,5 +1,5 @@
 import { BaseProvider } from './base-provider';
-import { Chain, NormalizedBlock, NormalizedTransaction, TransactionStatus, TransactionType } from '@block-hash/common';
+import { Chain, NormalizedBlock, NormalizedTransaction, TransactionStatus, TransactionType, ConnectionState } from '@block-hash/common';
 import { JsonRpcProvider, Block, TransactionResponse, TransactionReceipt } from 'ethers';
 
 export class EvmProvider extends BaseProvider {

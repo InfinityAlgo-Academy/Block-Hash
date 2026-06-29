@@ -4,7 +4,7 @@ set -e
 echo "Starting Block-Hash Services..."
 
 # Ensure infrastructure is running
-docker-compose up -d
+docker compose up -d
 
 # Start API Server in background
 echo "Starting API Server..."

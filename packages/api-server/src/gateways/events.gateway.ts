@@ -47,17 +47,17 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // Listen to Redis Pub/Sub events published by the pipeline/collectors
     
     // New Blocks
-    await pubSubService.subscribe('bh:events:new_block', (block) => {
+    await pubSubService.subscribe<any>('bh:events:new_block', (block) => {
       this.server.to(`chain:${block.chain}`).emit('new_block', block);
     });
 
     // New Transactions
-    await pubSubService.subscribe('bh:events:new_transaction', (tx) => {
+    await pubSubService.subscribe<any>('bh:events:new_transaction', (tx) => {
       this.server.to(`chain:${tx.chain}`).emit('new_transaction', tx);
     });
 
     // Alerts (Whales, Smart Money)
-    await pubSubService.subscribe('bh:alerts:whale', (alert) => {
+    await pubSubService.subscribe<any>('bh:alerts:whale', (alert) => {
       this.server.to('alerts').emit('whale_alert', alert);
       this.server.to(`chain:${alert.chain}`).emit('whale_alert', alert);
     });

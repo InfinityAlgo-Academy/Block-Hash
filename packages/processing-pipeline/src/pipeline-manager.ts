@@ -18,7 +18,7 @@ export class PipelineManager {
         this.isRunning = true;
 
         // Subscribe to new transactions published by the data-collector
-        await pubSubService.subscribe('bh:events:new_transaction', async (tx: NormalizedTransaction) => {
+        await pubSubService.subscribe<NormalizedTransaction>('bh:events:new_transaction', async (tx) => {
             try {
                 // Route to engines
                 await this.whaleTracker.processTransaction(tx);

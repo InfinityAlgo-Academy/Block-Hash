@@ -5,12 +5,13 @@
 import { getRedisPublisher, getRedisSubscriber } from './client';
 import Redis from 'ioredis';
 
-export type MessageHandler = (channel: string, message: string) => void;
+export type MessageHandler<T = any> = (data: T) => void;
+type InternalHandler = (channel: string, message: string) => void;
 
 export class PubSubService {
   private publisher: Redis;
   private subscriber: Redis;
-  private handlers: Map<string, Set<MessageHandler>> = new Map();
+  private handlers: Map<string, Set<InternalHandler>> = new Map();
 
   constructor() {
     this.publisher = getRedisPublisher();
@@ -39,30 +40,27 @@ export class PubSubService {
     await this.publisher.publish(channel, message);
   }
 
-  /** Subscribe to a channel */
-  async subscribe(channel: string, handler: MessageHandler): Promise<void> {
+  /** Subscribe to a channel with auto-parsed typed data */
+  async subscribe<T = any>(channel: string, handler: MessageHandler<T>): Promise<void> {
+    const wrapped: InternalHandler = (ch, message) => {
+      try {
+        const parsed = PubSubService.parseMessage<T>(message);
+        handler(parsed.data);
+      } catch (err) {
+        console.error(`[PubSub] Failed to parse message on ${channel}:`, err);
+      }
+    };
     if (!this.handlers.has(channel)) {
       this.handlers.set(channel, new Set());
       await this.subscriber.subscribe(channel);
     }
-    this.handlers.get(channel)!.add(handler);
+    this.handlers.get(channel)!.add(wrapped);
   }
 
   /** Unsubscribe from a channel */
-  async unsubscribe(channel: string, handler?: MessageHandler): Promise<void> {
-    const channelHandlers = this.handlers.get(channel);
-    if (!channelHandlers) return;
-
-    if (handler) {
-      channelHandlers.delete(handler);
-      if (channelHandlers.size === 0) {
-        this.handlers.delete(channel);
-        await this.subscriber.unsubscribe(channel);
-      }
-    } else {
-      this.handlers.delete(channel);
-      await this.subscriber.unsubscribe(channel);
-    }
+  async unsubscribe(channel: string): Promise<void> {
+    this.handlers.delete(channel);
+    await this.subscriber.unsubscribe(channel);
   }
 
   /** Parse a received message */

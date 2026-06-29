@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { socket } from '@/lib/socket';
 import { Chain, NormalizedTransaction } from '@block-hash/common';
-import { Activity, Zap, AlertTriangle, ArrowRightRight } from 'lucide-react';
+import { Activity, Zap, AlertTriangle, ArrowRight } from 'lucide-react';
 
 export function Dashboard() {
     const [chain, setChain] = useState<Chain>(Chain.ETHEREUM);
@@ -111,7 +111,7 @@ export function Dashboard() {
                                     <span className="text-xs text-blue-400 font-mono truncate">{tx.hash}</span>
                                     <div className="flex items-center space-x-2 text-xs text-slate-400 mt-1">
                                         <span className="truncate w-24">{tx.from}</span>
-                                        <ArrowRightRight className="w-3 h-3" />
+                                        <ArrowRight className="w-3 h-3" />
                                         <span className="truncate w-24">{tx.to || 'Contract'}</span>
                                     </div>
                                 </div>

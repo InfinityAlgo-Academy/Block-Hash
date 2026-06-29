@@ -37,12 +37,13 @@
     { "path": "packages/database" },
     { "path": "packages/blockchain-nodes" },
     { "path": "packages/data-collector" },
-    { "path": "packages/processing-pipeline" },
-    { "path": "packages/api-server" }
+    { "path": "packages/processing-pipeline" }
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "packages/frontend"
+    "config",
+    "packages/frontend",
+    "packages/api-server"
   ]
 }

@@ -2,7 +2,7 @@
 // Block-Hash Database — ClickHouse Analytics Queries
 // ============================================
 
-import { getClickHouseClient } from '../clickhouse/client';
+import { getClickHouseClient } from '../client';
 import { Chain } from '@block-hash/common';
 
 const ch = () => getClickHouseClient();
