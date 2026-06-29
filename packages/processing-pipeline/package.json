@@ -1,0 +1,19 @@
+{
+  "name": "@block-hash/processing-pipeline",
+  "version": "1.0.0",
+  "description": "Analytics engines and AI ranking",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@block-hash/common": "*",
+    "@block-hash/database": "*",
+    "openai": "^4.52.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

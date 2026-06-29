@@ -1,0 +1,36 @@
+{
+  "name": "block-hash",
+  "version": "1.0.0",
+  "description": "Multi-chain blockchain analytics platform — real-time whale tracking, smart money detection, and AI-powered ranking",
+  "private": true,
+  "workspaces": [
+    "packages/common",
+    "packages/database",
+    "packages/blockchain-nodes",
+    "packages/data-collector",
+    "packages/processing-pipeline",
+    "packages/api-server",
+    "packages/frontend"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "build:backend": "npm run build --workspace=packages/common --workspace=packages/database --workspace=packages/blockchain-nodes --workspace=packages/data-collector --workspace=packages/processing-pipeline --workspace=packages/api-server",
+    "dev:api": "npm run dev --workspace=packages/api-server",
+    "dev:frontend": "npm run dev --workspace=packages/frontend",
+    "dev:collector": "npm run dev --workspace=packages/data-collector",
+    "dev:pipeline": "npm run dev --workspace=packages/processing-pipeline",
+    "type-check": "tsc --noEmit --project tsconfig.json",
+    "lint": "eslint 'packages/*/src/**/*.{ts,tsx}'",
+    "db:generate": "npm run db:generate --workspace=packages/database",
+    "db:migrate": "npm run db:migrate --workspace=packages/database",
+    "db:seed": "npm run db:seed --workspace=packages/database",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "clean": "rm -rf packages/*/dist packages/*/node_modules node_modules"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "author": "Block-Hash Team",
+  "license": "MIT"
+}

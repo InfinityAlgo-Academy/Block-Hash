@@ -1,0 +1,20 @@
+{
+  "name": "@block-hash/data-collector",
+  "version": "1.0.0",
+  "description": "Data collector layer — polling and web-socket streaming of on-chain data",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@block-hash/common": "*",
+    "@block-hash/database": "*",
+    "@block-hash/blockchain-nodes": "*",
+    "ethers": "^6.13.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

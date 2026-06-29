@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ES2022"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "paths": {
+      "@block-hash/common": ["packages/common/src"],
+      "@block-hash/common/*": ["packages/common/src/*"],
+      "@block-hash/database": ["packages/database/src"],
+      "@block-hash/database/*": ["packages/database/src/*"],
+      "@block-hash/blockchain-nodes": ["packages/blockchain-nodes/src"],
+      "@block-hash/blockchain-nodes/*": ["packages/blockchain-nodes/src/*"],
+      "@block-hash/data-collector": ["packages/data-collector/src"],
+      "@block-hash/data-collector/*": ["packages/data-collector/src/*"],
+      "@block-hash/processing-pipeline": ["packages/processing-pipeline/src"],
+      "@block-hash/processing-pipeline/*": ["packages/processing-pipeline/src/*"],
+      "@block-hash/api-server": ["packages/api-server/src"],
+      "@block-hash/api-server/*": ["packages/api-server/src/*"]
+    },
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  },
+  "references": [
+    { "path": "packages/common" },
+    { "path": "packages/database" },
+    { "path": "packages/blockchain-nodes" },
+    { "path": "packages/data-collector" },
+    { "path": "packages/processing-pipeline" },
+    { "path": "packages/api-server" }
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "packages/frontend"
+  ]
+}

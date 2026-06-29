@@ -1,0 +1,236 @@
+// ============================================
+// Prisma Schema — Block-Hash Database
+// ============================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Blocks ─────────────────────────────────
+
+model Block {
+  id              String   @id @default(uuid())
+  chain           String
+  number          BigInt
+  hash            String
+  parentHash      String
+  timestamp       DateTime
+  nonce           String   @default("")
+  miner           String   @default("")
+  gasUsed         BigInt?
+  gasLimit        BigInt?
+  baseFeePerGas   BigInt?
+  transactionCount Int     @default(0)
+  size            Int      @default(0)
+  createdAt       DateTime @default(now())
+
+  @@unique([chain, hash])
+  @@index([chain, number])
+  @@index([chain, timestamp])
+  @@map("blocks")
+}
+
+// ── Transactions ───────────────────────────
+
+model Transaction {
+  id              String   @id @default(uuid())
+  chain           String
+  hash            String
+  blockNumber     BigInt
+  blockHash       String
+  fromAddress     String
+  toAddress       String?
+  value           String   // BigInt as string for precision
+  gasPrice        String?
+  maxFeePerGas    String?
+  maxPriorityFee  String?
+  gasUsed         String?
+  gasLimit        String?
+  nonce           Int
+  input           String   @default("0x")
+  status          Int      @default(1) // 1=success, 0=failed
+  type            String   @default("unknown")
+  timestamp       DateTime
+  txIndex         Int      @default(0)
+  createdAt       DateTime @default(now())
+
+  @@unique([chain, hash])
+  @@index([chain, blockNumber])
+  @@index([chain, fromAddress])
+  @@index([chain, toAddress])
+  @@index([chain, timestamp])
+  @@index([type])
+  @@map("transactions")
+}
+
+// ── Tokens ─────────────────────────────────
+
+model Token {
+  id              String   @id @default(uuid())
+  chain           String
+  address         String
+  symbol          String
+  name            String
+  decimals        Int
+  standard        String   @default("ERC20")
+  totalSupply     String?
+  holders         Int      @default(0)
+  verified        Boolean  @default(false)
+  logoUrl         String?
+  priceUsd        String?
+  marketCapUsd    String?
+  volume24hUsd    String?
+  change24h       Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([chain, address])
+  @@index([symbol])
+  @@index([holders])
+  @@map("tokens")
+}
+
+// ── Token Transfers ────────────────────────
+
+model TokenTransfer {
+  id              String   @id @default(uuid())
+  chain           String
+  transactionHash String
+  logIndex        Int
+  contractAddress String
+  fromAddress     String
+  toAddress       String
+  value           String
+  tokenId         String?  // for NFTs
+  standard        String   @default("ERC20")
+  timestamp       DateTime
+  createdAt       DateTime @default(now())
+
+  @@index([chain, contractAddress])
+  @@index([chain, fromAddress])
+  @@index([chain, toAddress])
+  @@index([chain, timestamp])
+  @@map("token_transfers")
+}
+
+// ── Wallets ────────────────────────────────
+
+model Wallet {
+  id              String   @id @default(uuid())
+  address         String   @unique
+  label           String?
+  type            String   @default("unknown")
+  tags            String[] @default([])
+  score           Float    @default(0)
+  totalValueUsd   String   @default("0")
+  transactionCount Int     @default(0)
+  firstSeen       DateTime @default(now())
+  lastActive      DateTime @default(now())
+  riskLevel       String   @default("low")
+  metadata        Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([type])
+  @@index([score])
+  @@index([lastActive])
+  @@map("wallets")
+}
+
+// ── Whale Alerts ───────────────────────────
+
+model WhaleAlert {
+  id              String   @id @default(uuid())
+  chain           String
+  transactionHash String
+  fromAddress     String
+  toAddress       String
+  token           String
+  tokenSymbol     String   @default("")
+  amount          String
+  amountUsd       Float
+  alertType       String
+  severity        String   @default("warning")
+  walletLabel     String?
+  timestamp       DateTime
+  acknowledged    Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  @@index([chain, timestamp])
+  @@index([alertType])
+  @@index([severity])
+  @@index([fromAddress])
+  @@index([toAddress])
+  @@map("whale_alerts")
+}
+
+// ── Smart Money Profiles ───────────────────
+
+model SmartMoneyProfile {
+  id                  String   @id @default(uuid())
+  address             String   @unique
+  score               Float    @default(0)
+  winRate             Float    @default(0)
+  totalTrades         Int      @default(0)
+  profitableTrades    Int      @default(0)
+  totalPnlUsd         String   @default("0")
+  realizedPnlUsd      String   @default("0")
+  avgRoi              Float    @default(0)
+  avgHoldingDays      Float    @default(0)
+  earlyAdoptionScore  Float    @default(0)
+  defiActivityScore   Float    @default(0)
+  holdingDurationScore Float   @default(0)
+  diversificationScore Float   @default(0)
+  recentTokens        String[] @default([])
+  trackedSince        DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([score])
+  @@index([winRate])
+  @@map("smart_money_profiles")
+}
+
+// ── Alert Rules ────────────────────────────
+
+model AlertRule {
+  id              String   @id @default(uuid())
+  userId          String
+  name            String
+  enabled         Boolean  @default(true)
+  categories      String[]
+  chains          String[]
+  conditions      Json
+  channels        Json
+  cooldownMs      Int      @default(60000)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@index([enabled])
+  @@map("alert_rules")
+}
+
+// ── Network Statistics ─────────────────────
+
+model NetworkStat {
+  id              String   @id @default(uuid())
+  chain           String
+  blockHeight     BigInt
+  tps             Float    @default(0)
+  avgBlockTime    Float    @default(0)
+  avgGasPrice     String?
+  activeAddresses Int      @default(0)
+  totalTx24h      Int      @default(0)
+  totalValue24h   String   @default("0")
+  tvlUsd          String?
+  timestamp       DateTime
+  createdAt       DateTime @default(now())
+
+  @@index([chain, timestamp])
+  @@map("network_stats")
+}

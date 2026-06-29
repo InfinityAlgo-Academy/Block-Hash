@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+
+# Database
+packages/database/src/prisma/migrations/
+
+# Generated
+*.generated.ts
+packages/api-server/src/grpc/protos/*.js
+packages/api-server/src/grpc/protos/*.d.ts
+
+# Docker volumes
+docker-data/
