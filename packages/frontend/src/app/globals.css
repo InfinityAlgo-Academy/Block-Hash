@@ -3,18 +3,126 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 15, 23, 42; /* tailwind slate-900 */
-  --background-end-rgb: 2, 6, 23;    /* tailwind slate-950 */
+  --foreground-rgb: 241, 245, 249;
+  --background-start-rgb: 10, 12, 18;
+  --background-end-rgb: 4, 6, 10;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to bottom,
-      transparent,
+      180deg,
+      rgb(var(--background-start-rgb)),
       rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    );
   min-height: 100vh;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E2430;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3B82F6;
+}
+
+.glass-panel {
+  @apply bg-surface/70 backdrop-blur-xl border border-white/[0.06] shadow-xl shadow-black/30;
+}
+
+.glass-panel-strong {
+  @apply bg-surface/85 backdrop-blur-xl border border-white/[0.08] shadow-xl shadow-black/40;
+}
+
+.card-hover {
+  @apply transition-all duration-300;
+}
+.card-hover:hover {
+  @apply border-primary/20 shadow-lg shadow-primary/5;
+  transform: translateY(-1px);
+}
+
+.glow-line {
+  @apply absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-primary via-secondary to-accent rounded-r;
+}
+
+.mini-chart-bg {
+  background: linear-gradient(180deg, rgba(59,130,246,0.15) 0%, rgba(59,130,246,0) 100%);
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(59,130,246,0.2); }
+  50% { box-shadow: 0 0 20px rgba(59,130,246,0.5); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+  animation: slide-up 0.4s ease-out forwards;
+}
+
+@keyframes fade-scale {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.fade-scale {
+  animation: fade-scale 0.3s ease-out forwards;
+}
+
+.table-row {
+  @apply transition-all duration-200;
+}
+.table-row:hover {
+  @apply bg-white/[0.03];
+}
+
+.stat-value {
+  @apply text-2xl font-bold tracking-tight text-white;
+}
+
+.stat-label {
+  @apply text-xs font-medium text-slate-500 uppercase tracking-widest;
+}
+
+.badge-primary {
+  @apply text-xs font-semibold px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20;
+}
+
+.badge-accent {
+  @apply text-xs font-semibold px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/20;
+}
+
+.badge-warning {
+  @apply text-xs font-semibold px-2.5 py-1 rounded-full bg-warning/10 text-warning border border-warning/20;
+}
+
+.badge-danger {
+  @apply text-xs font-semibold px-2.5 py-1 rounded-full bg-danger/10 text-danger border border-danger/20;
 }
